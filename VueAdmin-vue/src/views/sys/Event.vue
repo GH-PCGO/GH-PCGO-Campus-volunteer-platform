@@ -390,7 +390,7 @@ export default {
         this.size = res.data.data.size
         this.current = res.data.data.current
         this.total = res.data.data.total
-        alert(this.current)
+        //alert(this.current)
       })
 
 
