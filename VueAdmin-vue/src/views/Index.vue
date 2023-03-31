@@ -12,7 +12,7 @@
                   <span>志愿活动{{o}}</span>
                   <div class="bottom clearfix">
                     <time class="time">{{ currentDate }}</time>
-                    <el-button type="text" class="button">详情</el-button>
+                    <el-button type="text" class="button" @click="getDetail(o)">详情</el-button>
                   </div>
                 </div>
               </el-card>
@@ -28,12 +28,22 @@
 <script>
 // 卡片js
 export default {
+  // 详情点击事件
+
+  methods:{
+    getDetail(msg) {
+        alert(msg);
+    },
+  },
   data() {
     return {
       currentDate: new Date()
     };
-  }
+  },
+
 }
+
+
 </script>
 
 <style>

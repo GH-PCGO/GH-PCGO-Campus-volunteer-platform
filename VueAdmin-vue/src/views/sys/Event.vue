@@ -159,12 +159,8 @@
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
 
-        <el-form-item label="创建日期" required>
-          <el-col :span="11">
-            <el-form-item prop="created">
-              <el-date-picker type="date" placeholder="选择日期" v-model="editForm.created" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
+        <el-form-item label="活动人数" prop="num" required>
+          <el-input v-model="editForm.num"></el-input>
         </el-form-item>
         <el-form-item label="活动区域" prop="region" required>
           <el-select v-model="editForm.region" placeholder="请选择活动区域">
@@ -192,7 +188,7 @@
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
             <el-form-item prop="time">
-              <el-time-picker placeholder="选择时间" v-model="editForm.time" style="width: 100%;"></el-time-picker>
+              <el-datetime-picker placeholder="选择时间" v-model="editForm.time" style="width: 100%;"></el-datetime-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -255,7 +251,7 @@ export default {
       //弹窗相关组件赋值
       editForm: {
         name:'',
-        created:'',
+        num:'',
         region:'',
         location:'',
         sort:[],
@@ -400,7 +396,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post('/sys/event /' + (this.editForm.id?'update' : 'save'), this.editForm)
+          this.$axios.post('/sys/event/' + (this.editForm.id?'update' : 'save'), this.editForm)
               .then(res => {
 
                 this.$message({

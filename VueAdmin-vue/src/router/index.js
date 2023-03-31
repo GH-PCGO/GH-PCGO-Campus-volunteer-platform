@@ -6,6 +6,7 @@ import User from '../views/sys/User.vue'
 import Role from '../views/sys/Role.vue'
 import Menu from '../views/sys/Menu.vue'
 import Event from '../views/sys/Event.vue'
+import Notice from "../views/sys/Notice";
 
 
 import axios from "../axios";
@@ -43,6 +44,14 @@ const routes = [
 					title: "活动管理"
 				},
 				component: Event
+			},
+			{
+				path: 'sys/notice',
+				name: 'SysNotice',
+				meta: {
+					title: "通知管理"
+				},
+				component: Notice
 			},
 
 			// {

@@ -40,6 +40,9 @@ public class BaseController {
 	@Autowired
 	SysEventService sysEventService;
 
+	@Autowired
+	SysNoticeService sysNoticeService;
+
 	/**
 	 * 获取页面
 	 * @return
