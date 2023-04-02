@@ -1,3 +1,4 @@
+# netstat -aon|findstr "8080"(端口占用时使用)
 server:
   port: 8081
 # DataSource Config

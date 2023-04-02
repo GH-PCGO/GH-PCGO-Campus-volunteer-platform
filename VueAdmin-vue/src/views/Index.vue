@@ -1,5 +1,16 @@
 <template>
+
+<!--轮播图-->
   <el-row :gutter="20">
+    <el-carousel :interval="4000" type="card" height="200px">
+      <el-carousel-item v-for="item in imgList" :key="item.id">
+        <h3 class="medium">
+          <img ref="imgHeight" :src="item.idView" class="banner_img" @load="imgLoad"/>
+        </h3>
+      </el-carousel-item>
+    </el-carousel>
+    <el-divider></el-divider>
+<!--活动卡片-->
     <div v-for="o in 100" :key="o">
       <el-col :span="6">
         <div class="grid-content bg-purple">
@@ -28,8 +39,9 @@
 <script>
 // 卡片js
 export default {
-  // 详情点击事件
 
+
+  // 详情点击事件
   methods:{
     getDetail(msg) {
         alert(msg);
@@ -37,7 +49,8 @@ export default {
   },
   data() {
     return {
-      currentDate: new Date()
+      currentDate: new Date(),
+      imgList: [ {id: 0, idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test1.jpg')}, {id: 1, name: '详情', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test2.jpg')}, {id: 2, name: '推荐', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test3.jpg')}, ]
     };
   },
 
@@ -112,5 +125,22 @@ export default {
 
 .clearfix:after {
   clear: both
+}
+
+/*轮播图*/
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
 }
 </style>

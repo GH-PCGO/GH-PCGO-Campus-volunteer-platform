@@ -28,5 +28,8 @@ public class SysNotice extends BaseEntity {
     @NotBlank(message = "公告内容不能为空")
     private String content;
 
+    @TableField(exist = false)
+    private List<SysNotice> sysNotices = new ArrayList<>();
+
 
 }

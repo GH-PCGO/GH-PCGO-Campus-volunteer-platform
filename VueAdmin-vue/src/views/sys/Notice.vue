@@ -49,6 +49,11 @@
           width="120">
       </el-table-column>
       <el-table-column
+          prop="statu"
+          label="状态"
+          width="120">
+      </el-table-column>
+      <el-table-column
           prop="icon"
           width="260px"
           label="操作">
@@ -92,6 +97,14 @@
         <el-form-item label="活动内容" prop="content" required>
           <el-input v-model="editForm.content"></el-input>
         </el-form-item>
+
+        <el-form-item label="状态" prop="statu" label-width="100px">
+          <el-radio-group v-model="editForm.statu">
+            <el-radio :label=0>禁用</el-radio>
+            <el-radio :label=1>正常</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="submitForm('editForm')">立即创建</el-button>
           <el-button @click="resetForm('editForm')">重置</el-button>
@@ -124,10 +137,16 @@ export default {
       dialogVisible: false,
       //弹窗相关组件赋值
       editForm: {
-        content:'',
       },
       //弹窗表单校验
-      editFormRules: {},
+      editFormRules: {
+        content: [
+          {required: true, message: '请输入公告', trigger: 'blur'}
+        ],
+        statu: [
+          {required: true, message: '请选择状态', trigger: 'change'}
+        ]
+      },
 
       tableData: [],
 
@@ -211,7 +230,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post('/sys/notice/save', this.editForm)
+          this.$axios.post('/sys/notice/'+ (this.editForm.id?'update' : 'save'), this.editForm)
               .then(res => {
 
                 this.$message({
@@ -224,7 +243,6 @@ export default {
                 });
 
                 this.dialogVisible = false
-                this.resetForm(formName)
               })
         } else {
           console.log('error submit!!');
@@ -239,8 +257,35 @@ export default {
         this.dialogVisible = true
       })
     },
+    // delHandle(id) {
+    //   alert("/sys/notice/delete/" + id);
+    //   this.$axios.post("/sys/notice/delete/" + id).then(res => {
+    //     this.$message({
+    //       showClose: true,
+    //       message: '恭喜你，操作成功',
+    //       type: 'success',
+    //       onClose:() => {
+    //         this.getNoticeList()
+    //       }
+    //     });
+    //
+    //   })
+    // }
     delHandle(id) {
-      this.$axios.post("/sys/notice/delete/" + id).then(res => {
+
+      var ids = []
+
+      if (id) {
+        ids.push(id)
+      } else {
+        this.multipleSelection.forEach(row => {
+          ids.push(row.id)
+        })
+      }
+
+      console.log(ids)
+
+      this.$axios.post("/sys/notice/delete", ids).then(res => {
         this.$message({
           showClose: true,
           message: '恭喜你，操作成功',
@@ -249,9 +294,8 @@ export default {
             this.getNoticeList()
           }
         });
-
       })
-    }
+    },
   }
 }
 </script>

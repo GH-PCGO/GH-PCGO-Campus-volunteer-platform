@@ -6,14 +6,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.lang.Const;
 import com.markerhub.common.lang.Result;
-import com.markerhub.entity.SysEvent;
-import com.markerhub.entity.SysNotice;
-import com.markerhub.entity.SysUser;
+import com.markerhub.entity.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -56,5 +59,33 @@ public class SysNoticeController extends BaseController {
         sysNoticeService.save(sysNotice);
         return Result.succ(sysNotice);
     }
+
+    @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('sys:notice:list')")
+    public Result info(@PathVariable(name = "id") Long id) {
+        return Result.succ(sysNoticeService.getById(id));
+    }
+
+    @PostMapping("/update")
+    @PreAuthorize("hasAuthority('sys:notice:update')")
+    public Result update(@Validated @RequestBody SysNotice sysNotice) {
+
+        sysNotice.setUpdated(LocalDateTime.now());
+
+        sysNoticeService.updateById(sysNotice);
+        return Result.succ(sysNotice);
+    }
+
+    @Transactional
+    @PostMapping("/delete")
+    @PreAuthorize("hasAuthority('sys:notice:delete')")
+    public Result delete(@RequestBody Long[] ids) {
+
+        sysNoticeService.removeByIds(Arrays.asList(ids));
+
+        return Result.succ("");
+    }
+
+
 
 }
