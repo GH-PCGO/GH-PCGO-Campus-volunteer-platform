@@ -1,15 +1,79 @@
 <template>
 
-<!--轮播图-->
+
+
+
   <el-row :gutter="20">
+
+
+    <!--轮播图-->
     <el-carousel :interval="4000" type="card" height="200px">
       <el-carousel-item v-for="item in imgList" :key="item.id">
         <h3 class="medium">
-          <img ref="imgHeight" :src="item.idView" class="banner_img" @load="imgLoad"/>
+          <img ref="imgHeight" :src="item.idView" class="banner_img" />
         </h3>
       </el-carousel-item>
     </el-carousel>
+
     <el-divider></el-divider>
+
+    <!--公告-->
+    <div style="float: left;width: 50%">
+      <el-tag type="success">通知公告</el-tag>
+      <el-table
+          :data="tableData1"
+          stripe
+          style="width: 100%">
+<!--            <a href="scope.row.notice" target="_blank" class="buttonText">{{scope.row.notice}}</a>-->
+            <el-table-column
+                prop="content"
+                label="通知内容"
+                width="350">
+            </el-table-column>
+
+            <el-table-column
+                prop="created"
+                label="发布时间"
+                width="100">
+            </el-table-column>
+        <el-table-column
+            prop="date2"
+
+            width="100">
+          <template slot="header" slot-scope="scope">
+            <a href="" target="_blank">More<<</a>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <div style="margin-left: 50%; width: 50%">
+      <el-table
+          :data="tableData2"
+          stripe
+          style="width: 100%">
+        <el-table-column
+            prop="msg"
+            label="排行榜"
+            width="450">
+          <template slot-scope="scope">
+            <a href="scope.row.msg" target="_blank" class="buttonText">{{scope.row.msg}}</a>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+            prop="date2"
+
+            width="100">
+          <template slot="header" slot-scope="scope">
+            <a href="" target="_blank">More<<</a>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <el-divider></el-divider>
+
 <!--活动卡片-->
     <div v-for="o in 100" :key="o">
       <el-col :span="6">
@@ -40,17 +104,80 @@
 // 卡片js
 export default {
 
+  created(){
+    this.getNoticeList()
+    this.$axios.get("/sys/notice/list").then(res => {
+      this.roleTreeData = res.data.data.records
+    })
+  },
 
-  // 详情点击事件
   methods:{
+    //获取活动列表
+    getNoticeList(){
+      //搜索时要用到的参数
+      this.$axios.get("/sys/notice/list", {
+        params: {
+          //eventname: this.searchForm.eventname,
+          //分页的current和size
+          current: this.current,
+          size: this.size
+        }
+      }).then(res => {
+        this.tableData = res.data.data.records
+        this.size = res.data.data.size
+        this.current = res.data.data.current
+        this.total = res.data.data.total
+        //alert(this.current)
+      })
+
+
+    },
+
+    // 详情点击事件
     getDetail(msg) {
         alert(msg);
+    },
+
+    //弹窗
+    resetForm(formName) {
+      this.dialogVisible = true
+    },
+    handleClose() {
+      this.resetForm('editForm')
     },
   },
   data() {
     return {
       currentDate: new Date(),
-      imgList: [ {id: 0, idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test1.jpg')}, {id: 1, name: '详情', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test2.jpg')}, {id: 2, name: '推荐', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test3.jpg')}, ]
+      //轮播图测试
+      imgList: [ {id: 0, idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test1.jpg')}, {id: 1, name: '详情', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test2.jpg')}, {id: 2, name: '推荐', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test3.jpg')}, ],
+      //公告及排行榜测试
+      tableData1: [{
+        notice: '校内天梯选拔赛开始报名啦！',
+        date1 :'2020-3-6'
+      }, {
+        notice: '校内天梯选拔赛开始报名啦！',
+        date1 :'2020-3-6'
+      }, {
+        notice: '校内天梯选拔赛开始报名啦！',
+        date1 :'2020-3-6'
+      }, {
+        notice: '校内天梯选拔赛开始报名啦！',
+        date1 :'2020-3-6'
+      }],
+      tableData2: [{
+        msg: '校内天梯选拔赛开始报名啦！',
+        date2 :'2020-3-6'
+      }, {
+        msg: '校内天梯选拔赛开始报名啦！',
+        date2 :'2020-3-6'
+      }, {
+        msg: '校内天梯选拔赛开始报名啦！',
+        date2 :'2020-3-6'
+      }, {
+        msg: '校内天梯选拔赛开始报名啦！',
+        date2 :'2020-3-6'
+      }]
     };
   },
 
@@ -142,5 +269,10 @@ export default {
 
 .el-carousel__item:nth-child(2n+1) {
   background-color: #d3dce6;
+}
+
+/*公告栏*/
+a{
+  color: #7ac804;
 }
 </style>
