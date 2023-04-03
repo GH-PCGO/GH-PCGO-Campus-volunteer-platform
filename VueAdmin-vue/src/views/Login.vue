@@ -1,33 +1,38 @@
 <template>
 	<el-row type="flex" class="row-bg" justify="center">
-		<el-col :xl="6" :lg="7">
-			<h2>欢迎来到校园志愿汇系统</h2>
-			<el-image :src="require('@/assets/img.png')" style="height: 180px; width: 180px;"></el-image>
+    <div :style="background" class="bg">
+      <div class=" div2">
+        <el-col :xl="6" :lg="8" style="width: 250px;height: auto">
+          <h2>欢迎来到校园志愿汇系统</h2>
+          <el-image :src="require('@/assets/img.png')" style="height: 180px; width: 180px;"></el-image>
 
-		</el-col>
+        </el-col>
 
-		<el-col :span="1">
-			<el-divider direction="vertical"></el-divider>
-		</el-col>
-		<el-col :xl="6" :lg="7">
-			<el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
-				<el-form-item label="用户名" prop="username" style="width: 380px;">
-					<el-input v-model="loginForm.username"></el-input>
-				</el-form-item>
-				<el-form-item label="密码" prop="password"  style="width: 380px;">
-					<el-input v-model="loginForm.password" type="password"></el-input>
-				</el-form-item>
-				<el-form-item label="验证码" prop="code"  style="width: 380px;">
-					<el-input v-model="loginForm.code"  style="width: 172px; float: left" maxlength="5"></el-input>
-					<el-image :src="captchaImg" class="captchaImg" @click="getCaptcha"></el-image>
-				</el-form-item>
+        <el-col :span="1">
+          <el-divider direction="vertical"></el-divider>
+        </el-col>
+        <el-col :xl="6" :lg="7">
+          <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
+            <el-form-item label="用户名" prop="username" style="width: 380px;">
+              <el-input v-model="loginForm.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password"  style="width: 380px;">
+              <el-input v-model="loginForm.password" type="password"></el-input>
+            </el-form-item>
+            <el-form-item label="验证码" prop="code"  style="width: 380px;">
+              <el-input v-model="loginForm.code"  style="width: 172px; float: left" maxlength="5"></el-input>
+              <el-image :src="captchaImg" class="captchaImg" @click="getCaptcha"></el-image>
+            </el-form-item>
 
-				<el-form-item>
-					<el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
-					<el-button @click="resetForm('loginForm')">重置</el-button>
-				</el-form-item>
-			</el-form>
-		</el-col>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
+<!--              <el-button @click="resetForm('loginForm')">重置</el-button>-->
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </div>
+    </div>
+
 	</el-row>
 
 </template>
@@ -58,7 +63,21 @@
 						{ min: 5, max: 5, message: '长度为 5 个字符', trigger: 'blur' }
 					],
 				},
-				captchaImg: null
+				captchaImg: null,
+
+        // 背景图片
+        background: {
+          // 背景图片地址  require()
+          backgroundImage: 'url(' + require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/login_back.jpg') + ')',
+          // 背景图是否重复
+          backgroundRepeat: 'no-repeat',
+          // 背景图片大小
+          backgroundSize: 'cover',
+          // 背景颜色
+          backgroundColor: '#000',
+          // 背景图片位置
+          backgroundPosition: 'center top'
+        }
 			};
 		},
 		methods: {
@@ -122,5 +141,17 @@
 		margin-left: 8px;
 		border-radius: 4px;
 	}
+  /*背景图*/
+  .bg{
+    width:1366px;
+    height: 636px;
+  }
+  .div2{
+    position: absolute;
+    right: 350px;
+    bottom: 200px;
+
+    }
+
 
 </style>

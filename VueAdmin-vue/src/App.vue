@@ -35,5 +35,7 @@
 		padding: 0;
 		margin: 0;
 		font-size: 15px;
+    background: rgb(255, 255, 255);
 	}
+
 </style>
