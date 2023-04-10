@@ -2,7 +2,7 @@
 	<el-menu
 			:default-active="this.$store.state.menus.editableTabsValue"
 			class="el-menu-vertical-demo"
-			background-color="#545c64"
+			background-color="grey"
 			text-color="#fff"
 			active-text-color="#ffd04b">
 
@@ -31,6 +31,15 @@
 			</router-link>
 
 		</el-submenu>
+
+    <router-link to="/index">
+      <el-menu-item index="Index"  @click="selectMenu({name: 'Index', title: '首页'})">
+        <template slot="title">
+          <i class="el-icon-s-flag"></i>
+          <span slot="title">活动记录</span>
+        </template>
+      </el-menu-item>
+    </router-link>
 
 	</el-menu>
 </template>

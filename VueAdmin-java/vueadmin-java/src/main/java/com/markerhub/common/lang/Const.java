@@ -9,5 +9,5 @@ public class Const {
 //	默认密码
 	public static final String DEFULT_PASSWORD = "888888";
 //	默认头像
-	public static final String DEFULT_AVATAR = "https://image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/5a9f48118166308daba8b6da7e466aab.jpg";
+	public static final String DEFULT_AVATAR = "http://p1.qhmsg.com/dm/180_180_100/t01a8f0e324070c8e0c.jpg";
 }

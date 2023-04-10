@@ -80,9 +80,11 @@
           style="width: 100%">
         <el-table-column
             prop="msg"
-            label="排行榜"
+            label="姓名"
             width="450">
+
           <template slot-scope="scope">
+            <i class="el-icon-s-data"></i>
             <a href="scope.row.msg" target="_blank" class="buttonText">{{scope.row.msg}}</a>
           </template>
         </el-table-column>
@@ -101,6 +103,7 @@
     <el-divider></el-divider>
 
 <!--活动卡片-->
+<!--    v-for="item in eventList"-->
     <div v-for="o in 100" :key="o">
       <el-col :span="6">
         <div class="grid-content bg-purple">
@@ -108,8 +111,10 @@
             <!--控制卡片大小-->
             <el-col :span="50"  >
               <el-card :body-style="{ padding: '0px' }">
+<!--                src=item.image-->
                 <img src="http://www.gxgqt.org.cn/uploadfile/2011/0121/20110121025707796.jpg" class="image">
                 <div style="padding: 14px;">
+<!--                  <span>item.eventname</span>-->
                   <span>志愿活动{{o}}</span>
                   <div class="bottom clearfix">
                     <time class="time">{{ currentDate }}</time>
@@ -189,29 +194,29 @@ export default {
       imgList: [ {id: 0, idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test1.jpg')}, {id: 1, name: '详情', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test2.jpg')}, {id: 2, name: '推荐', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test3.jpg')}, ],
       //公告及排行榜测试
       tableData1: [{
-        notice: '校内天梯选拔赛开始报名啦！',
+        notice: '还没写！',
         date1 :'2020-3-6'
       }, {
-        notice: '校内天梯选拔赛开始报名啦！',
+        notice: '还没写！',
         date1 :'2020-3-6'
       }, {
-        notice: '校内天梯选拔赛开始报名啦！',
+        notice: '还没写！',
         date1 :'2020-3-6'
       }, {
-        notice: '校内天梯选拔赛开始报名啦！',
+        notice: '还没写！',
         date1 :'2020-3-6'
       }],
       tableData2: [{
-        msg: '校内天梯选拔赛开始报名啦！',
+        msg: '还没写！',
         date2 :'2020-3-6'
       }, {
-        msg: '校内天梯选拔赛开始报名啦！',
+        msg: '还没写！',
         date2 :'2020-3-6'
       }, {
-        msg: '校内天梯选拔赛开始报名啦！',
+        msg: '还没写！',
         date2 :'2020-3-6'
       }, {
-        msg: '校内天梯选拔赛开始报名啦！',
+        msg: '还没写！',
         date2 :'2020-3-6'
       }],
 
