@@ -1,47 +1,19 @@
 <template>
   <div style="width: 500px;height: 500px">
-    <el-form :model="expressForm" :rules="expressFormRules" ref="expressForm">
-      <el-form-item label="虫害名称" prop="title" label-width="120px">
-        <el-input v-model="expressForm.title" autocomplete="off"></el-input>
-        <!--          <el-alert-->
-        <!--              title="初始密码为888888"-->
-        <!--              :closable="false"-->
-        <!--              type="info"-->
-        <!--              style="line-height: 12px;"-->
-        <!--          ></el-alert>-->
-      </el-form-item>
-      <el-form-item label="虫害信息"  prop="message" label-width="120px"  >
-        <el-input type="textarea" v-model="expressForm.message" autocomplete="off" :rows="20" style="font-size:20px"></el-input>
-      </el-form-item>
-      <el-form-item label="虫害图片"  prop="img" label-width="120px"  v-if="expressForm.img!=null" >
-        <el-image
-            v-model="expressForm.img"
-            :src="expressForm.img"
-        ></el-image>
-      </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <!--        <el-button @click="resetForm('editForm')">取 消</el-button>-->
-      <el-button type="primary" @click="cancalexpressForm('expressForm')">关闭</el-button>
-    </div>
+
 
     <el-dialog
-        title="虫害信息"
+        title="发布活动"
         :visible.sync="dialogVisible"
-        width="500px"
+        width="800px"
         :before-close="handleClose">
 
       <el-form :model="editForm" :rules="editFormRules" ref="editForm">
-        <el-form-item label="虫害名称" prop="title" label-width="120px">
-          <el-input v-model="editForm.title" autocomplete="off"></el-input>
+        <el-form-item label="活动名称" prop="eventname" label-width="120px">
+          <el-input v-model="editForm.eventname" autocomplete="off"></el-input>
         </el-form-item>
 
-
-        <el-form-item label="虫害信息"  prop="message" label-width="120px" label-hight="300px" >
-          <el-input type="textarea" v-model="editForm.message" autocomplete="off" :rows="20" style="font-size:20px"></el-input>
-        </el-form-item>
-
-        <el-form-item label="图片上传"  prop="img" label-width="120px">
+        <el-form-item label="活动图片上传"  prop="img" label-width="120px">
           <el-upload
               class="upload-demo"
               action="http://localhost:8081/sys/express/upload"
@@ -57,9 +29,40 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="发布人"  prop="username" label-width="120px">
-          <el-input v-model="editForm.username" autocomplete="off"></el-input>
+        <el-form-item label="活动人数" prop="num" label-width="120px">
+          <el-input v-model="editForm.num" autocomplete="off"></el-input>
         </el-form-item>
+
+        <el-form-item label="活动地点" prop="location" label-width="120px">
+          <el-input v-model="editForm.location" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="活动时间" label-width="120px">
+          <el-col :span="5">
+            <el-date-picker type="date" placeholder="选择日期" v-model="editForm.data" style="width: 250px;"></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="4">-</el-col>
+          <el-col :span="5">
+            <el-time-picker placeholder="选择时间" v-model="editForm.time" style="width: 250px;"></el-time-picker>
+          </el-col>
+        </el-form-item>
+
+        <el-form-item label="活动时长" prop="duration" label-width="120px">
+          <el-input v-model="editForm.duration" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="联系方式" prop="phone" label-width="120px" >
+          <el-input v-model="editForm.duration" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="创建人"  prop="leader" label-width="120px">
+          <el-input v-model="editForm.leader" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="活动内容"  prop="remark" label-width="120px">
+          <el-input v-model="editForm.remark" autocomplete="off"></el-input>
+        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="resetForm('editForm')">取 消</el-button>
@@ -176,26 +179,6 @@ export default {
 
 
     },
-
-    //获取图片列表
-    // getPestList() {
-    //   //搜索时要用到的参数
-    //   this.$axios.get("/sys/notice/list", {
-    //     params: {
-    //       //eventname: this.searchForm.eventname,
-    //       //分页的current和size
-    //       current: this.current,
-    //       size: this.size
-    //     }
-    //   }).then(res => {
-    //     this.tableData = res.data.data.records
-    //     this.size = res.data.data.size
-    //     this.current = res.data.data.current
-    //     this.total = res.data.data.total
-    //     //alert(this.current)
-    //   })
-    //
-    // },
 
     //弹窗
     resetForm(formName) {
