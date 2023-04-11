@@ -6,6 +6,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
 
@@ -40,6 +41,13 @@ public class CorsConfig implements WebMvcConfigurer {
 //          .allowCredentials(true)
 				.allowedMethods("GET", "POST", "DELETE", "PUT")
 				.maxAge(3600);
+	}
+
+	// 图片访问 虚拟路径配置
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/img/**")
+				.addResourceLocations("file:F:\\本科毕业设计\\SpringBoot\\VueAdmin-java\\vueadmin-java\\src\\main\\resources\\static\\img\\");
 	}
 
 }

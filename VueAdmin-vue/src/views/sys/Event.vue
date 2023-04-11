@@ -1,382 +1,167 @@
 <template>
-  <div>
-    <el-form :inline="true">
-      <el-form-item>
-        <el-input
-            v-model="searchForm.username"
-            placeholder="活动名"
-            clearable
-        >
-        </el-input>
+  <div style="width: 500px;height: 500px">
+    <el-form :model="expressForm" :rules="expressFormRules" ref="expressForm">
+      <el-form-item label="虫害名称" prop="title" label-width="120px">
+        <el-input v-model="expressForm.title" autocomplete="off"></el-input>
+        <!--          <el-alert-->
+        <!--              title="初始密码为888888"-->
+        <!--              :closable="false"-->
+        <!--              type="info"-->
+        <!--              style="line-height: 12px;"-->
+        <!--          ></el-alert>-->
       </el-form-item>
-
-      <el-form-item>
-        <el-button @click="getEventList">搜索</el-button>
+      <el-form-item label="虫害信息"  prop="message" label-width="120px"  >
+        <el-input type="textarea" v-model="expressForm.message" autocomplete="off" :rows="20" style="font-size:20px"></el-input>
       </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" @click="dialogVisible = true" v-if="hasAuth('sys:user:save')">新增</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-popconfirm title="这是确定批量删除吗？" @confirm="delHandle(null)">
-          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')">批量删除</el-button>
-        </el-popconfirm>
+      <el-form-item label="虫害图片"  prop="img" label-width="120px"  v-if="expressForm.img!=null" >
+        <el-image
+            v-model="expressForm.img"
+            :src="expressForm.img"
+        ></el-image>
       </el-form-item>
     </el-form>
+    <div slot="footer" class="dialog-footer">
+      <!--        <el-button @click="resetForm('editForm')">取 消</el-button>-->
+      <el-button type="primary" @click="cancalexpressForm('expressForm')">关闭</el-button>
+    </div>
 
-    <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        border
-        stripe
-        @selection-change="handleSelectionChange">
-
-      <el-table-column
-          type="selection"
-          width="55">
-      </el-table-column>
-
-      <el-table-column
-          prop="id"
-          label="序号"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="eventname"
-          label="活动名称"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="created"
-          label="创建时间"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="region"
-          label="活动区域"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="location"
-          label="活动地点"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="sort"
-          label="活动性质"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="date"
-          label="活动日期"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="time"
-          label="开始时间"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="duration"
-          label="活动时长"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="status"
-          label="活动状态">
-        <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.status === 1" type="success">可报名</el-tag>
-          <el-tag size="small" v-else-if="scope.row.status === 0" type="danger">已结束</el-tag>
-        </template>
-
-      </el-table-column>
-      <el-table-column
-          prop="phone"
-          label="联系方式"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="leader"
-          label="创建人"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="remark"
-          label="活动备注"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="created"
-          width="200"
-          label="创建时间"
-      >
-      </el-table-column>
-      <el-table-column
-          prop="icon"
-          width="260px"
-          label="操作">
-
-        <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.row.id)">编辑</el-button>
-          <el-divider direction="vertical"></el-divider>
-
-          <template>
-            <el-popconfirm title="这是一段内容确定删除吗？" @confirm="delHandle(scope.row.id)">
-              <el-button type="text" slot="reference">删除</el-button>
-            </el-popconfirm>
-          </template>
-
-        </template>
-      </el-table-column>
-<!--      应当还要写：活动人数、剩余名额-->
-
-    </el-table>
-
-<!--    分页插件-->
-    <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        layout="total, sizes, prev, pager, next, jumper"
-        :page-sizes="[10, 20, 50, 100]"
-        :current-page="current"
-        :page-size="size"
-        :total="total">
-    </el-pagination>
-
-
-    <!--新增对话框-->
-    <!--新增对话框-->
     <el-dialog
-        title="提示"
+        title="虫害信息"
         :visible.sync="dialogVisible"
-        width="600px"
+        width="500px"
         :before-close="handleClose">
 
-      <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm" >
-        <el-form-item label="活动名称" prop="name" required>
-          <el-input v-model="editForm.name"></el-input>
+      <el-form :model="editForm" :rules="editFormRules" ref="editForm">
+        <el-form-item label="虫害名称" prop="title" label-width="120px">
+          <el-input v-model="editForm.title" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="活动人数" prop="num" required>
-          <el-input v-model="editForm.num"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" prop="region" required>
-          <el-select v-model="editForm.region" placeholder="请选择活动区域">
-            <el-option label="校内" value="inside"></el-option>
-            <el-option label="校外" value="outside"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="活动地点" prop="location" required>
-          <el-input v-model="editForm.location"></el-input>
-        </el-form-item>
-        <el-form-item label="活动性质" prop="sort" required>
-          <el-checkbox-group v-model="editForm.sort">
-            <el-checkbox label="社区公益服务" name="sort"></el-checkbox>
-            <el-checkbox label="弱势群体服务" name="sort"></el-checkbox>
-            <el-checkbox label="校园公益服务" name="sort"></el-checkbox>
-            <el-checkbox label="其他" name="sort"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="活动时间" required>
-          <el-col :span="11">
-            <el-form-item prop="date">
-              <el-date-picker type="date" placeholder="选择日期" v-model="editForm.date" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-form-item prop="time">
-              <el-datetime-picker placeholder="选择时间" v-model="editForm.time" style="width: 100%;"></el-datetime-picker>
-            </el-form-item>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="活动时长" prop="duration" required>
-          <el-select v-model="editForm.duration" placeholder="请选择活动时长">
-            <el-option label="1小时" value="1"></el-option>
-            <el-option label="2小时" value="2"></el-option>
-            <el-option label="3小时" value="3"></el-option>
-            <el-option label="4小时" value="4"></el-option>
-            <el-option label="5小时" value="5"></el-option>
-            <el-option label="6小时" value="6"></el-option>
-            <el-option label="7小时" value="7"></el-option>
-            <el-option label="8小时" value="8"></el-option>
-            <el-option label="9小时" value="9"></el-option>
-            <el-option label="10小时" value="10"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="允许报名" prop="status">
-          <el-switch v-model="editForm.status"></el-switch>
+
+        <el-form-item label="虫害信息"  prop="message" label-width="120px" label-hight="300px" >
+          <el-input type="textarea" v-model="editForm.message" autocomplete="off" :rows="20" style="font-size:20px"></el-input>
         </el-form-item>
 
-        <el-form-item label="联系方式" prop="phone" required>
-          <el-input v-model="editForm.phone"></el-input>
+        <el-form-item label="图片上传"  prop="img" label-width="120px">
+          <el-upload
+              class="upload-demo"
+              action="http://localhost:8081/sys/express/upload"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :before-remove="beforeRemove"
+              :on-success="handleAvatarSuccess"
+              :limit="1"
+              :on-exceed="handleExceed"
+              :file-list="fileList">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </el-form-item>
-        <el-form-item label="创建人/组织" prop="leader" required>
-          <el-input v-model="editForm.leader"></el-input>
-        </el-form-item>
-        <el-form-item label="活动介绍" prop="remark" required>
-          <el-input type="textarea" v-model="editForm.remark"></el-input>
 
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('editForm')">立即创建</el-button>
-          <el-button @click="resetForm('editForm')">重置</el-button>
+        <el-form-item label="发布人"  prop="username" label-width="120px">
+          <el-input v-model="editForm.username" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="resetForm('editForm')">取 消</el-button>
+        <el-button type="primary" @click="submitForm('editForm')">确定</el-button>
+      </div>
 
     </el-dialog>
-    <!-- 分配权限对话框 -->
 
 
   </div>
-</template>
 
+
+</template>
 <script>
 export default {
-  name: "Role",
-  data() {
-    return {
-      searchForm: {},
-      delBtlStatu: true,
-
-      // 分页插件属性赋值
-      total: 0,
-      size: 10,
-      current: 1,
-
-      //弹窗是否显示
-      dialogVisible: false,
-      //弹窗相关组件赋值
-      editForm: {
-        name:'',
-        num:'',
-        region:'',
-        location:'',
-        sort:[],
-        date:'',
-        time:'',
-        duration:'',
-        status:false,
-        phone:'',
-        leader:'',
-        remark:'',
-
-      },
-      //弹窗表单校验
-      editFormRules: {},
-
-
-
-      tableData: [],
-      // tableData: [{
-      //   id:1,
-      //   eventname:'活动1',
-      //   created:'2023-03-06 16:32:39',
-      //   region:'校内',
-      //   location:'体育馆南门',
-      //   sort:'校园公益服务',
-      //   date: '2023-03-08',
-      //   time:'2023-03-08 17:00:00',
-      //   duration:2,
-      //   status:1,
-      //   phone:'17673018830',
-      //   leader:'彭冲',
-      //   remark:'活动内容如下：',
-      // }, {
-      //   id:1,
-      //   eventname:'活动1',
-      //   created:'2023-03-06 16:32:39',
-      //   region:'校内',
-      //   location:'体育馆南门',
-      //   sort:'校园公益服务',
-      //   date: '2023-03-08',
-      //   time:'2023-03-08 17:00:00',
-      //   duration:2,
-      //   status:1,
-      //   phone:'17673018830',
-      //   leader:'彭冲',
-      //   remark:'活动内容如下：',
-      // }, {
-      //   id:1,
-      //   eventname:'活动1',
-      //   created:'2023-03-06 16:32:39',
-      //   region:'校内',
-      //   location:'体育馆南门',
-      //   sort:'校园公益服务',
-      //   date: '2023-03-08',
-      //   time:'2023-03-08 17:00:00',
-      //   duration:2,
-      //   status:1,
-      //   phone:'17673018830',
-      //   leader:'彭冲',
-      //   remark:'活动内容如下：',
-      // }],
-
-
-
-      multipleSelection: [],
-
-      roleDialogFormVisible: false,
-      defaultProps: {
-        children: 'children',
-        label: 'name'
-      },
-      roleForm: {},
-      roleTreeData: [],
-      treeCheckedKeys: [],
-      checkStrictly: true
-
-    }
-  },
-
   created(){
-    this.getEventList()
-    this.$axios.get("/sys/event/list").then(res => {
+    this.getNoticeList()
+    this.$axios.get("/sys/notice/list").then(res => {
       this.roleTreeData = res.data.data.records
     })
   },
+  data() {
+    return {
+      dialogImageUrl: '',
+      //弹窗是否显示
+      dialogVisible: true,
 
-// table
+      expressDialogVisible:false,
+
+      expressFormRules:{},
+
+      //弹窗相关组件赋值
+      editForm: {},
+      //弹窗表单校验
+      editFormRules: {
+        content: [
+          {required: true, message: '请输入公告', trigger: 'blur'}
+        ],
+        statu: [
+          {required: true, message: '请选择状态', trigger: 'change'}
+        ]
+      },
+
+      fileList: [],
+
+      expressForm: {},
+
+      cancalexpressForm:{},
+
+
+    };
+  },
   methods: {
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log(this.editForm.img)
+          this.$axios.post('/sys/pest/'+(this.editForm.id?'update':'save'),this.editForm)
+              .then(res=>{
+                // 消息框提示操作成功
+                this.$message({
+                  showClose: true,
+                  message: '恭喜你，操作成功',
+                  type: 'success',
+                  //关闭时的回调函数, 参数为被关闭的 message 实例
+                  onClose:()=>{
+                    //this.getPestList()
+                  }
+                })
+              })
+          this.resetForm('editForm')
+          this.dialogVisible=false;
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      window.open(file.response.url)
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${ file.name }？`);
+    },
+    handleAvatarSuccess(res, file) {
+      this.editForm.img = res.url
     },
 
-    // 分页
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
-
-    //弹窗
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.dialogVisible = false
-      this.editForm = {}
-    },
-    handleClose() {
-      this.resetForm('editForm')
-    },
 
     //获取活动列表
-    getEventList(){
+    getNoticeList(){
       //搜索时要用到的参数
-      this.$axios.get("/sys/event/list", {
+      this.$axios.get("/sys/notice/list", {
         params: {
-          eventname: this.searchForm.eventname,
+          //eventname: this.searchForm.eventname,
           //分页的current和size
           current: this.current,
           size: this.size
@@ -392,60 +177,36 @@ export default {
 
     },
 
-    //“立即创建“按键响应事件
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.$axios.post('/sys/event/' + (this.editForm.id?'update' : 'save'), this.editForm)
-              .then(res => {
+    //获取图片列表
+    // getPestList() {
+    //   //搜索时要用到的参数
+    //   this.$axios.get("/sys/notice/list", {
+    //     params: {
+    //       //eventname: this.searchForm.eventname,
+    //       //分页的current和size
+    //       current: this.current,
+    //       size: this.size
+    //     }
+    //   }).then(res => {
+    //     this.tableData = res.data.data.records
+    //     this.size = res.data.data.size
+    //     this.current = res.data.data.current
+    //     this.total = res.data.data.total
+    //     //alert(this.current)
+    //   })
+    //
+    // },
 
-                this.$message({
-                  showClose: true,
-                  message: '恭喜你，操作成功',
-                  type: 'success',
-                  onClose:() => {
-                    this.getEventList()
-                  }
-                });
-
-                this.dialogVisible = false
-                this.resetForm(formName)
-              })
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+    //弹窗
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.dialogVisible = false
+      this.editForm = {}
     },
-    editHandle(id) {
-      this.$axios.get('/sys/event/info/' + id).then(res => {
-        this.editForm = res.data.data
-
-        this.dialogVisible = true
-      })
+    handleClose() {
+      this.resetForm('editForm')
     },
-    delHandle(id) {
-      this.$axios.post("/sys/event/delete/" + id).then(res => {
-        this.$message({
-          showClose: true,
-          message: '恭喜你，操作成功',
-          type: 'success',
-          onClose:() => {
-            this.getEventList()
-          }
-        });
 
-      })
-    }
   }
 }
 </script>
-
-<style scoped>
-
-.el-pagination {
-  float: right;
-  margin-top: 22px;
-}
-
-</style>

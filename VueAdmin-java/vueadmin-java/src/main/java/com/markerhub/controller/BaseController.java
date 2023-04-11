@@ -43,6 +43,9 @@ public class BaseController {
 	@Autowired
 	SysNoticeService sysNoticeService;
 
+	@Autowired
+	ExpressInfoService expressInfoService;
+
 	/**
 	 * 获取页面
 	 * @return
