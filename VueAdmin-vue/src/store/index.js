@@ -5,21 +5,21 @@ import menus from "./modules/menus";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-	state: {
-		token: ''
+    state: {
+        token: ''
 
-	},
-	mutations: {
+    },
+    mutations: {
 
-		SET_TOKEN: (state, token) => {
-			state.token = token
-			localStorage.setItem("token", token)
-		},
+        SET_TOKEN: (state, token) => {
+            state.token = token
+            localStorage.setItem("token", token)
+        },
 
 
-	},
-	actions: {},
-	modules: {
-		menus
-	}
+    },
+    actions: {},
+    modules: {
+        menus
+    }
 })

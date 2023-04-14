@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :inline="true" >
+    <el-form :inline="true">
       <el-form-item>
         <el-input
             v-model="searchForm.username"
@@ -19,7 +19,8 @@
       </el-form-item>
       <el-form-item>
         <el-popconfirm title="这是确定批量删除吗？" @confirm="delHandle(null)">
-          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')">批量删除</el-button>
+          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')">批量删除
+          </el-button>
         </el-popconfirm>
       </el-form-item>
     </el-form>
@@ -92,8 +93,7 @@
         :before-close="handleClose">
 
 
-
-      <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm" >
+      <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
         <el-form-item label="活动内容" prop="content" required>
           <el-input v-model="editForm.content"></el-input>
         </el-form-item>
@@ -110,7 +110,6 @@
           <el-button @click="resetForm('editForm')">重置</el-button>
         </el-form-item>
       </el-form>
-
 
 
     </el-dialog>
@@ -135,8 +134,7 @@ export default {
       //弹窗是否显示
       dialogVisible: false,
       //弹窗相关组件赋值
-      editForm: {
-      },
+      editForm: {},
       //弹窗表单校验
       editFormRules: {
         content: [
@@ -164,7 +162,7 @@ export default {
     }
   },
 
-  created(){
+  created() {
     this.getNoticeList()
     this.$axios.get("/sys/notice/list").then(res => {
       this.roleTreeData = res.data.data.records
@@ -205,7 +203,7 @@ export default {
     },
 
     //获取活动列表
-    getNoticeList(){
+    getNoticeList() {
       //搜索时要用到的参数
       this.$axios.get("/sys/notice/list", {
         params: {
@@ -229,14 +227,14 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post('/sys/notice/'+ (this.editForm.id?'update' : 'save'), this.editForm)
+          this.$axios.post('/sys/notice/' + (this.editForm.id ? 'update' : 'save'), this.editForm)
               .then(res => {
 
                 this.$message({
                   showClose: true,
                   message: '恭喜你，操作成功',
                   type: 'success',
-                  onClose:() => {
+                  onClose: () => {
                     this.getNoticeList()
                   }
                 });
@@ -289,7 +287,7 @@ export default {
           showClose: true,
           message: '恭喜你，操作成功',
           type: 'success',
-          onClose:() => {
+          onClose: () => {
             this.getNoticeList()
           }
         });

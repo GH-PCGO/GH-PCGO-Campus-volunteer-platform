@@ -2,12 +2,13 @@ package com.markerhub.entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author pc

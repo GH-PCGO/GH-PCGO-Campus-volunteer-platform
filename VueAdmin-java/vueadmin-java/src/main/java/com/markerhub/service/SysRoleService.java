@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface SysRoleService extends IService<SysRole> {
 
-	List<SysRole> listRolesByUserId(Long userId);
+    List<SysRole> listRolesByUserId(Long userId);
 
 }

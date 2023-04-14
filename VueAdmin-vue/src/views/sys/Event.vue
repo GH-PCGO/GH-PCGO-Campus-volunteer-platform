@@ -19,7 +19,8 @@
       </el-form-item>
       <el-form-item>
         <el-popconfirm title="这是确定批量删除吗？" @confirm="delHandle(null)">
-          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')">批量删除</el-button>
+          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')">批量删除
+          </el-button>
         </el-popconfirm>
       </el-form-item>
     </el-form>
@@ -164,7 +165,7 @@
     </el-pagination>
 
 
-<!--发布活动弹窗-->
+    <!--发布活动弹窗-->
     <el-dialog
         title="发布活动"
         :visible.sync="dialogVisible"
@@ -176,7 +177,7 @@
           <el-input v-model="editForm.eventname" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="活动图片上传"  prop="img" label-width="120px">
+        <el-form-item label="活动图片上传" prop="img" label-width="120px">
           <el-upload
               class="upload-demo"
               action="http://localhost:8081/sys/express/upload"
@@ -202,12 +203,14 @@
 
         <el-form-item label="活动时间" label-width="120px">
           <el-col :span="5">
-            <el-date-picker type="date" placeholder="选择日期" v-model="editForm.date" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width: 250px;"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" v-model="editForm.date" format="yyyy 年 MM 月 dd 日"
+                            value-format="yyyy-MM-dd" style="width: 250px;"></el-date-picker>
 
           </el-col>
           <el-col class="line" :span="4">-</el-col>
           <el-col :span="5">
-            <el-time-picker placeholder="选择时间" v-model="editForm.time" format="yy 时 MM 分 dd 秒" value-format="yy:MM:dd" style="width: 250px;"></el-time-picker>
+            <el-time-picker placeholder="选择时间" v-model="editForm.time" format="yy 时 MM 分 dd 秒" value-format="yy:MM:dd"
+                            style="width: 250px;"></el-time-picker>
           </el-col>
         </el-form-item>
 
@@ -215,15 +218,15 @@
           <el-input v-model="editForm.duration" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="联系方式" prop="phone" label-width="120px" >
+        <el-form-item label="联系方式" prop="phone" label-width="120px">
           <el-input v-model="editForm.phone" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="创建人"  prop="leader" label-width="120px">
+        <el-form-item label="创建人" prop="leader" label-width="120px">
           <el-input v-model="editForm.leader" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="活动内容"  prop="remark" label-width="120px">
+        <el-form-item label="活动内容" prop="remark" label-width="120px">
           <el-input v-model="editForm.remark" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -242,7 +245,7 @@
 </template>
 <script>
 export default {
-  created(){
+  created() {
     this.getEventList()
     this.$axios.get("/sys/event/list").then(res => {
       this.roleTreeData = res.data.data.records
@@ -279,7 +282,7 @@ export default {
 
       expressForm: {},
 
-      cancalexpressForm:{},
+      cancalexpressForm: {},
 
 
     };
@@ -312,21 +315,21 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.editForm.img)
-          this.$axios.post('/sys/event/'+(this.editForm.id?'update':'save'),this.editForm)
-              .then(res=>{
+          this.$axios.post('/sys/event/' + (this.editForm.id ? 'update' : 'save'), this.editForm)
+              .then(res => {
                 // 消息框提示操作成功
                 this.$message({
                   showClose: true,
                   message: '恭喜你，操作成功',
                   type: 'success',
                   //关闭时的回调函数, 参数为被关闭的 message 实例
-                  onClose:()=>{
+                  onClose: () => {
                     this.getEventList()
                   }
                 })
               })
           this.resetForm('editForm')
-          this.dialogVisible=false;
+          this.dialogVisible = false;
         } else {
           console.log('error submit!!');
           return false;
@@ -359,7 +362,7 @@ export default {
           showClose: true,
           message: '恭喜你，操作成功',
           type: 'success',
-          onClose:() => {
+          onClose: () => {
             this.getEventList()
           }
         });
@@ -378,7 +381,7 @@ export default {
       this.$message.warning(`当前限制选择 1个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
     beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${ file.name }？`);
+      return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleAvatarSuccess(res, file) {
       this.editForm.img = res.url
@@ -386,7 +389,7 @@ export default {
 
 
 //获取活动列表
-    getEventList(){
+    getEventList() {
       //搜索时要用到的参数
       this.$axios.get("/sys/event/list", {
         params: {

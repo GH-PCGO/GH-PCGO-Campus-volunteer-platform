@@ -17,67 +17,68 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.Principal;
+
 /**
-
- *通过控制器提供生成验证码的方法
-
+ * 通过控制器提供生成验证码的方法
+ *
  * @author pc
  * @date
  */
 @RestController
-public class AuthController extends BaseController{
+public class AuthController extends BaseController {
 
-	@Autowired
-	Producer producer;
+    @Autowired
+    Producer producer;
 
-	@GetMapping("/captcha")
-	public Result captcha() throws IOException {
+    @GetMapping("/captcha")
+    public Result captcha() throws IOException {
 
-		String key = UUID.randomUUID().toString();
-		String code = producer.createText();
+        String key = UUID.randomUUID().toString();
+        String code = producer.createText();
 
-		// 为了测试
-		key = "aaaaa";
-		code = "11111";
+        // 为了测试
+        key = "aaaaa";
+        code = "11111";
 
-		BufferedImage image = producer.createImage(code);
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		ImageIO.write(image, "jpg", outputStream);
+        BufferedImage image = producer.createImage(code);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", outputStream);
 
-		BASE64Encoder encoder = new BASE64Encoder();
-		String str = "data:image/jpeg;base64,";
+        BASE64Encoder encoder = new BASE64Encoder();
+        String str = "data:image/jpeg;base64,";
 
-		String base64Img = str + encoder.encode(outputStream.toByteArray());
+        String base64Img = str + encoder.encode(outputStream.toByteArray());
 
-		redisUtil.hset(Const.CAPTCHA_KEY, key, code, 120);
+        redisUtil.hset(Const.CAPTCHA_KEY, key, code, 120);
 
-		return Result.succ(
-				MapUtil.builder()
-						.put("token", key)
-						.put("captchaImg", base64Img)
-						.build()
+        return Result.succ(
+                MapUtil.builder()
+                        .put("token", key)
+                        .put("captchaImg", base64Img)
+                        .build()
 
-		);
-	}
+        );
+    }
 
-	/**
-	 * 获取用户信息接口
-	 * @param principal
-	 * @return
-	 */
-	@GetMapping("/sys/userInfo")
-	public Result userInfo(Principal principal) {
+    /**
+     * 获取用户信息接口
+     *
+     * @param principal
+     * @return
+     */
+    @GetMapping("/sys/userInfo")
+    public Result userInfo(Principal principal) {
 
-		SysUser sysUser = sysUserService.getByUsername(principal.getName());
-		//用map返回部分不敏感信息
-		return Result.succ(MapUtil.builder()
-				.put("id", sysUser.getId())
-				.put("username", sysUser.getUsername())
-				.put("avatar", sysUser.getAvatar())
-				.put("created", sysUser.getCreated())
-				.map()
-		);
-	}
+        SysUser sysUser = sysUserService.getByUsername(principal.getName());
+        //用map返回部分不敏感信息
+        return Result.succ(MapUtil.builder()
+                .put("id", sysUser.getId())
+                .put("username", sysUser.getUsername())
+                .put("avatar", sysUser.getAvatar())
+                .put("created", sysUser.getCreated())
+                .map()
+        );
+    }
 
 
 }

@@ -17,47 +17,47 @@ import java.io.IOException;
 @Component
 public class CaptchaFilter extends OncePerRequestFilter {
 
-	@Autowired
-	RedisUtil redisUtil;
+    @Autowired
+    RedisUtil redisUtil;
 
-	@Autowired
-	LoginFailureHandler loginFailureHandler;
+    @Autowired
+    LoginFailureHandler loginFailureHandler;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    @Override
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-		String url = httpServletRequest.getRequestURI();
-		//如果是登录请求且请求方式是post
-		if ("/login".equals(url) && httpServletRequest.getMethod().equals("POST")) {
+        String url = httpServletRequest.getRequestURI();
+        //如果是登录请求且请求方式是post
+        if ("/login".equals(url) && httpServletRequest.getMethod().equals("POST")) {
 
-			try{
-				// 校验验证码
-				validate(httpServletRequest);
-			} catch (CaptchaException e) {
+            try {
+                // 校验验证码
+                validate(httpServletRequest);
+            } catch (CaptchaException e) {
 
-				// 交给认证失败处理器
-				loginFailureHandler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
-			}
-		}
-		//校验成功，继续往下走
-		filterChain.doFilter(httpServletRequest, httpServletResponse);
-	}
+                // 交给认证失败处理器
+                loginFailureHandler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
+            }
+        }
+        //校验成功，继续往下走
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
 
-	// 校验验证码逻辑
-	private void validate(HttpServletRequest httpServletRequest) {
+    // 校验验证码逻辑
+    private void validate(HttpServletRequest httpServletRequest) {
 
-		String code = httpServletRequest.getParameter("code");
-		String key = httpServletRequest.getParameter("token");
+        String code = httpServletRequest.getParameter("code");
+        String key = httpServletRequest.getParameter("token");
 
-		if (StringUtils.isBlank(code) || StringUtils.isBlank(key)) {
-			throw new CaptchaException("请输入验证码");
-		}
+        if (StringUtils.isBlank(code) || StringUtils.isBlank(key)) {
+            throw new CaptchaException("请输入验证码");
+        }
 
-		if (!code.equals(redisUtil.hget(Const.CAPTCHA_KEY, key))) {
-			throw new CaptchaException("验证码错误");
-		}
+        if (!code.equals(redisUtil.hget(Const.CAPTCHA_KEY, key))) {
+            throw new CaptchaException("验证码错误");
+        }
 
-		// 一次性使用
-		redisUtil.hdel(Const.CAPTCHA_KEY, key);
-	}
+        // 一次性使用
+        redisUtil.hdel(Const.CAPTCHA_KEY, key);
+    }
 }

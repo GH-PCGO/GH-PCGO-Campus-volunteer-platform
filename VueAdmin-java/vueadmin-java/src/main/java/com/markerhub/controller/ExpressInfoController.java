@@ -16,7 +16,7 @@ import java.util.UUID;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author pc
@@ -27,11 +27,11 @@ import java.util.UUID;
 public class ExpressInfoController extends BaseController {
 
     @PostMapping("/upload")
-    public Map<String,Object> fileupload(MultipartFile file, HttpServletRequest req) {
+    public Map<String, Object> fileupload(MultipartFile file, HttpServletRequest req) {
         Map<String, Object> result = new HashMap<>();
 
         // 放在本地项目 目录
-        String filePath="F:\\本科毕业设计\\SpringBoot\\VueAdmin-java\\vueadmin-java\\src\\main\\resources\\static\\img";
+        String filePath = "F:\\本科毕业设计\\SpringBoot\\VueAdmin-java\\vueadmin-java\\src\\main\\resources\\static\\img";
         File folder = new File(filePath);
 
         if (!folder.exists()) {
@@ -45,7 +45,7 @@ public class ExpressInfoController extends BaseController {
         try {
             // 保存文件到指定路径
             file.transferTo(new File(folder, newName));
-            String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()+"/img/"  + newName;
+            String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/img/" + newName;
 
             System.out.println(url);
             result.put("status", "OK");

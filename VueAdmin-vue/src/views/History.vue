@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 <template>
   <div>
     <el-form :inline="true">
@@ -29,7 +19,8 @@
       </el-form-item>
       <el-form-item>
         <el-popconfirm title="这是确定批量删除吗？" @confirm="delHandle(null)">
-          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')">批量删除</el-button>
+          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')">批量删除
+          </el-button>
         </el-popconfirm>
       </el-form-item>
     </el-form>
@@ -164,7 +155,7 @@
         width="600px"
         :before-close="handleClose">
 
-      <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm" >
+      <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
         <el-form-item label="活动名称" prop="name" required>
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
@@ -192,7 +183,8 @@
         <el-form-item label="活动时间" required>
           <el-col :span="11">
             <el-form-item prop="date">
-              <el-date-picker type="date" placeholder="选择日期" v-model="editForm.date" style="width: 100%;"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="editForm.date"
+                              style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
@@ -260,23 +252,22 @@ export default {
       dialogVisible: false,
       //弹窗相关组件赋值
       editForm: {
-        num:'',
-        region:'',
-        location:'',
-        sort:[],
-        date:'',
-        time:'',
-        duration:'',
-        status:false,
-        phone:'',
-        leader:'',
-        remark:'',
-        name:'',
+        num: '',
+        region: '',
+        location: '',
+        sort: [],
+        date: '',
+        time: '',
+        duration: '',
+        status: false,
+        phone: '',
+        leader: '',
+        remark: '',
+        name: '',
 
       },
       //弹窗表单校验
       editFormRules: {},
-
 
 
       tableData: [],
@@ -325,7 +316,6 @@ export default {
       // }],
 
 
-
       multipleSelection: [],
 
       roleDialogFormVisible: false,
@@ -341,7 +331,7 @@ export default {
     }
   },
 
-  created(){
+  created() {
     this.getEventList()
     this.$axios.get("/sys/event/list").then(res => {
       this.roleTreeData = res.data.data.records
@@ -382,7 +372,7 @@ export default {
     },
 
     //获取活动列表
-    getEventList(){
+    getEventList() {
       //搜索时要用到的参数
       this.$axios.get("/sys/event/list", {
         params: {
@@ -406,14 +396,14 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post('/sys/event/' + (this.editForm.id?'update' : 'save'), this.editForm)
+          this.$axios.post('/sys/event/' + (this.editForm.id ? 'update' : 'save'), this.editForm)
               .then(res => {
 
                 this.$message({
                   showClose: true,
                   message: '恭喜你，操作成功',
                   type: 'success',
-                  onClose:() => {
+                  onClose: () => {
                     this.getEventList()
                   }
                 });
@@ -440,7 +430,7 @@ export default {
           showClose: true,
           message: '恭喜你，操作成功',
           type: 'success',
-          onClose:() => {
+          onClose: () => {
             this.getEventList()
           }
         });

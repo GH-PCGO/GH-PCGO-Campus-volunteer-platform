@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author pc
@@ -44,7 +44,7 @@ public class SysNoticeController extends BaseController {
 //
 //            u.setSysEvents(sysEventService.listRolesByUserId(u.getId()));
 //        });
-        System.out.println("公告pageData:"+pageData);//pageData:com.baomidou.mybatisplus.extension.plugins.pagination.Page@5f928d15
+        System.out.println("公告pageData:" + pageData);//pageData:com.baomidou.mybatisplus.extension.plugins.pagination.Page@5f928d15
 
         return Result.succ(pageData);
     }
@@ -85,7 +85,6 @@ public class SysNoticeController extends BaseController {
 
         return Result.succ("");
     }
-
 
 
 }

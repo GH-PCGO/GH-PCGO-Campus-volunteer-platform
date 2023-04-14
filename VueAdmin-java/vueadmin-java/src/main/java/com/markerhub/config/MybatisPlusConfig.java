@@ -9,11 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
-
- *开启mapper接口扫描，添加分页、防全表更新插件
+ * 开启mapper接口扫描，添加分页、防全表更新插件
  * PaginationInnerInterceptor：新的分页插件
  * BlockAttackInnerInterceptor：防止全表更新和删除
-
+ *
  * @author pc
  * @date
  */
@@ -21,20 +20,20 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan("com.markerhub.mapper")
 public class MybatisPlusConfig {
 
-	@Bean
-	public MybatisPlusInterceptor mybatisPlusInterceptor() {
-		MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-		// 分页插件
-		interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
-		// 防止全表更新插件
-		interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // 分页插件
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+        // 防止全表更新插件
+        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
 
-		return interceptor;
-	}
+        return interceptor;
+    }
 
-	@Bean
-	public ConfigurationCustomizer configurationCustomizer() {
-		return configuration -> configuration.setUseDeprecatedExecutor(false);
-	}
+    @Bean
+    public ConfigurationCustomizer configurationCustomizer() {
+        return configuration -> configuration.setUseDeprecatedExecutor(false);
+    }
 
 }

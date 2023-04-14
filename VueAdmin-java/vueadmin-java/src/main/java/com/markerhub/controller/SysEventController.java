@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author pc
@@ -38,7 +38,7 @@ public class SysEventController extends BaseController {
 
         Page<SysEvent> pageData = sysEventService.page(getPage(), new QueryWrapper<SysEvent>()
                 .like(StrUtil.isNotBlank(eventname), "eventname", eventname));
-        System.out.println("活动pageData:"+pageData);//pageData:com.baomidou.mybatisplus.extension.plugins.pagination.Page@5f928d15
+        System.out.println("活动pageData:" + pageData);//pageData:com.baomidou.mybatisplus.extension.plugins.pagination.Page@5f928d15
 
         return Result.succ(pageData);
     }
