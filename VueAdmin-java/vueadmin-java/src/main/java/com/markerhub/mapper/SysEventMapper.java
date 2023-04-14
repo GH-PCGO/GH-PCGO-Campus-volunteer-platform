@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author pc
- * @since 2023-03-10
+ * @since 2023-04-14
  */
 public interface SysEventMapper extends BaseMapper<SysEvent> {
 

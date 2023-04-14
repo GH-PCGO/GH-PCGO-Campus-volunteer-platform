@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.lang.Const;
 import com.markerhub.common.lang.Result;
 import com.markerhub.entity.SysEvent;
+import com.markerhub.entity.SysNotice;
 import com.markerhub.entity.SysUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -35,11 +36,6 @@ public class SysEventController extends BaseController {
 
         Page<SysEvent> pageData = sysEventService.page(getPage(), new QueryWrapper<SysEvent>()
                 .like(StrUtil.isNotBlank(eventname), "eventname", eventname));
-
-//        pageData.getRecords().forEach(u -> {
-//
-//            u.setSysEvents(sysEventService.listRolesByUserId(u.getId()));
-//        });
         System.out.println("活动pageData:"+pageData);//pageData:com.baomidou.mybatisplus.extension.plugins.pagination.Page@5f928d15
 
         return Result.succ(pageData);

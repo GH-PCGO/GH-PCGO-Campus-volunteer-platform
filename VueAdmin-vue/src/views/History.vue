@@ -260,7 +260,6 @@ export default {
       dialogVisible: false,
       //弹窗相关组件赋值
       editForm: {
-        name:'',
         num:'',
         region:'',
         location:'',
@@ -272,6 +271,7 @@ export default {
         phone:'',
         leader:'',
         remark:'',
+        name:'',
 
       },
       //弹窗表单校验
