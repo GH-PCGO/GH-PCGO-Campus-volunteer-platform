@@ -333,6 +333,40 @@ export default {
         }
       });
     },
+    editHandle(id) {
+      this.$axios.get('/sys/evnet/info/' + id).then(res => {
+        this.editForm = res.data.data
+
+        this.dialogVisible = true
+      })
+    },
+    delHandle(id) {
+
+      var ids = []
+
+      if (id) {
+        ids.push(id)
+      } else {
+        this.multipleSelection.forEach(row => {
+          ids.push(row.id)
+        })
+      }
+
+      console.log(ids)
+
+      this.$axios.post("/sys/event/delete", ids).then(res => {
+        this.$message({
+          showClose: true,
+          message: '恭喜你，操作成功',
+          type: 'success',
+          onClose:() => {
+            this.getEventList()
+          }
+        });
+      })
+    },
+
+    //图片上传
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },

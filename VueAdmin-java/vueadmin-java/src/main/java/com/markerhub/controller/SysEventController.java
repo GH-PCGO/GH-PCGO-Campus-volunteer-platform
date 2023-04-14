@@ -10,10 +10,12 @@ import com.markerhub.entity.SysEvent;
 import com.markerhub.entity.SysNotice;
 import com.markerhub.entity.SysUser;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -50,6 +52,33 @@ public class SysEventController extends BaseController {
 
         sysEventService.save(sysEvent);
         return Result.succ(sysEvent);
+    }
+
+    @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('sys:event:list')")
+    public Result info(@PathVariable(name = "id") Long id) {
+        return Result.succ(sysEventService.getById(id));
+    }
+
+
+    @PostMapping("/update")
+    @PreAuthorize("hasAuthority('sys:event:update')")
+    public Result update(@Validated @RequestBody SysEvent sysEvent) {
+
+        sysEvent.setUpdated(LocalDateTime.now());
+
+        sysEventService.updateById(sysEvent);
+        return Result.succ(sysEvent);
+    }
+
+    @Transactional
+    @PostMapping("/delete")
+    @PreAuthorize("hasAuthority('sys:event:delete')")
+    public Result delete(@RequestBody Long[] ids) {
+
+        sysEventService.removeByIds(Arrays.asList(ids));
+
+        return Result.succ("");
     }
 
 }
