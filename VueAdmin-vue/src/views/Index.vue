@@ -104,7 +104,7 @@
 
 <!--活动卡片-->
 <!--    v-for="item in eventList"-->
-    <div v-for="o in 100" :key="o">
+    <div v-for="item in eventList">
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-row>
@@ -112,12 +112,12 @@
             <el-col :span="50"  >
               <el-card :body-style="{ padding: '0px' }">
 <!--                src=item.image-->
-                <img src="http://www.gxgqt.org.cn/uploadfile/2011/0121/20110121025707796.jpg" class="image">
+                <img :src="item.img" class="image" style="width: 270px; height: 250px">
                 <div style="padding: 14px;">
 <!--                  <span>item.eventname</span>-->
-                  <span>志愿活动{{o}}</span>
+                  <span>{{item.eventname}}</span>
                   <div class="bottom clearfix">
-                    <time class="time">{{ currentDate }}</time>
+                    <time class="time">{{ item.date }}</time>
                     <el-button type="text" class="button" @click="getDetail(o)">详情</el-button>
                   </div>
                 </div>
@@ -136,15 +136,17 @@
 export default {
 
   created(){
-    // this.getNoticeList()
-    // this.$axios.get("/sys/notice/list").then(res => {
-    //   this.roleTreeData = res.data.data.records
-    // })
+    this.getEventList()
+    this.$axios.get("/sys/event/list").then(res => {
+      this.roleTreeData = res.data.data.records
+    })
 
     this.getNoticeList()
     this.$axios.get("/sys/notice/list").then(res => {
       this.roleTreeData = res.data.data.records
     })
+
+
 
   },
 
@@ -163,8 +165,25 @@ export default {
       this.multipleSelection = val;
     },
 
-
     //获取活动列表
+    getEventList() {
+      //搜索时要用到的参数
+      this.$axios.get("/sys/event/list", {
+        params: {
+          eventname: this.searchForm.eventname,
+          //分页的current和size
+          current: this.current,
+          size: this.size
+        }
+      }).then(res => {
+        this.eventList = res.data.data.records
+        this.size = res.data.data.size
+        this.current = res.data.data.current
+        this.total = res.data.data.total
+        //alert(this.current)
+      })
+    },
+    //获取公告动列表
     getNoticeList(){
       //搜索时要用到的参数
       this.$axios.get("/sys/notice/list", {
@@ -180,6 +199,8 @@ export default {
 
     },
 
+
+
     // 详情点击事件
     getDetail(msg) {
         alert(msg);
@@ -189,6 +210,7 @@ export default {
   },
   data() {
     return {
+      eventList: [],//活动列表
       currentDate: new Date(),
       //轮播图测试
       imgList: [ {id: 0, idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test1.jpg')}, {id: 1, name: '详情', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test2.jpg')}, {id: 2, name: '推荐', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test3.jpg')}, ],
