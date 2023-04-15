@@ -104,17 +104,24 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-row>
-            <!--控制卡片大小-->
+            <!-- 控制卡片大小 -->
             <el-col :span="50">
               <el-card :body-style="{ padding: '0px' }">
-                <!--                src=item.image-->
+                <!-- src=item.image -->
                 <img :src="item.img" class="image" style="width: 270px; height: 250px">
                 <div style="padding: 14px;">
-                  <!--                  <span>item.eventname</span>-->
+                  <!-- <span>item.eventname</span> -->
                   <span>{{ item.eventname }}</span>
                   <div class="bottom clearfix">
                     <time class="time">{{ item.date }}</time>
-                    <el-button type="text" class="button" @click="getDetail(o)">详情</el-button>
+
+
+                      <el-button type="text" class="button" @click="editHandle(1)">详情</el-button>
+                      <el-divider direction="vertical"></el-divider>
+
+
+
+
                   </div>
                 </div>
               </el-card>
@@ -123,9 +130,36 @@
         </div>
       </el-col>
     </div>
+
+
+    <!--新增对话框-->
+    <el-dialog
+        :title="editForm.eventname"
+        :visible.sync="dialogVisible"
+        width="600px"
+        :before-close="handleClose">
+
+      <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
+        <el-card class="box-card">
+          <div v-for="o in 4" :key="o" class="text item">
+            {{'列表内容 ' + o }}
+          </div>
+        </el-card>
+
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('editForm')">报名</el-button>
+          <el-button @click="resetForm('editForm')">取消</el-button>
+        </el-form-item>
+      </el-form>
+
+    </el-dialog>
   </el-row>
 
+
+
 </template>
+
+
 
 <script>
 // 卡片js
@@ -192,18 +226,41 @@ export default {
 
     },
 
-
     // 详情点击事件
-    getDetail(msg) {
-      alert(msg);
+    editHandle(id) {
+      this.$axios.get('/sys/event/info/10' ).then(res => {
+        this.editForm = res.data.data
+
+        this.dialogVisible = true
+      })
     },
+    handleClose() {
+      this.resetForm('editForm')
+    },
+
+    //弹窗相关
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.dialogVisible = false
+      this.editForm = {}
+    },
+
 
 
   },
   data() {
     return {
-      eventList: [],//活动列表
+      //活动列表
+      eventList: [],
+
+      editForm: {},
+      editFormRules: {},
+
       currentDate: new Date(),
+
+      //活动报名弹窗相关
+      dialogVisible: false,
+
       //轮播图测试
       imgList: [{id: 0, idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test1.jpg')}, {
         id: 1,
@@ -349,5 +406,18 @@ export default {
 /*公告栏*/
 a {
   color: #7ac804;
+}
+
+/*报名弹窗*/
+.text {
+  font-size: 14px;
+}
+
+.item {
+  padding: 18px 0;
+}
+
+.box-card {
+  width: 480px;
 }
 </style>

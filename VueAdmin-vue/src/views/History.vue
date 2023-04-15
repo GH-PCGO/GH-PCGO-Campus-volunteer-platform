@@ -396,6 +396,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          // 报名活动时，axios怎么写？ /sys/event/
           this.$axios.post('/sys/event/' + (this.editForm.id ? 'update' : 'save'), this.editForm)
               .then(res => {
 
