@@ -102,32 +102,22 @@
     <!--    v-for="item in eventList"-->
     <div v-for="item in eventList">
       <el-col :span="6">
-        <div class="grid-content bg-purple">
           <el-row>
             <!-- 控制卡片大小 -->
             <el-col :span="50">
               <el-card :body-style="{ padding: '0px' }">
                 <!-- src=item.image -->
-                <img :src="item.img" class="image" style="width: 270px; height: 250px">
+                <img :src="item.img" class="image"  @click="handleCardClick(item.id)" style="width: 270px; height: 250px">
                 <div style="padding: 14px;">
                   <!-- <span>item.eventname</span> -->
                   <span>{{ item.eventname }}</span>
                   <div class="bottom clearfix">
                     <time class="time">{{ item.date }}</time>
-
-
-                      <el-button type="text" class="button" @click="editHandle(1)">详情</el-button>
-                      <el-divider direction="vertical"></el-divider>
-
-
-
-
                   </div>
                 </div>
               </el-card>
             </el-col>
           </el-row>
-        </div>
       </el-col>
     </div>
 
@@ -227,13 +217,23 @@ export default {
     },
 
     // 详情点击事件
-    editHandle(id) {
-      this.$axios.get('/sys/event/info/10' ).then(res => {
-        this.editForm = res.data.data
+    // editHandle(id) {
+    //   this.$axios.get('/sys/event/info/10' ).then(res => {
+    //     this.editForm = res.data.data
+    //
+    //     this.dialogVisible = true
+    //   })
+    // },
 
-        this.dialogVisible = true
-      })
+    handleCardClick(id) {
+      // 处理点击卡片时需要传递的信息
+        this.$axios.get('/sys/event/info/'+ id ).then(res => {
+          this.editForm = res.data.data
+
+          this.dialogVisible = true
+        })
     },
+
     handleClose() {
       this.resetForm('editForm')
     },
