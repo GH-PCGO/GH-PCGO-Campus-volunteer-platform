@@ -129,17 +129,33 @@
         width="600px"
         :before-close="handleClose">
 
-      <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
-        <el-card class="box-card">
-          <div v-for="o in 4" :key="o" class="text item">
-            {{'列表内容 ' + o }}
+      <el-form :model="editForm" :rules="editFormRules" ref="editForm"  class="demo-editForm">
+        <el-card class="box-card"  style="width: 100%;height: 100%;border-radius: 30px">
+          <div class="text item">
+            <span style="font-weight: bold">活动日期:</span>{{ editForm.date }}
+            <span style="font-weight: bold">开始时间:</span>{{ editForm.time }}
           </div>
+          <div class="text item">
+            <span style="font-weight: bold">剩余名额:</span><el-tag>{{ editForm.num }}</el-tag>
+          </div>
+          <div class="text item">
+            <span style="font-weight: bold">活动时长:</span>{{ editForm.duration }}
+          </div>
+          <div class="text item">
+            <span style="font-weight: bold">负责人:</span>{{ editForm.leader }}
+            <span style="font-weight: bold">联系方式:</span>{{ editForm.phone }}
+          </div>
+          <div class="text item">
+            <span style="font-weight: bold">活动内容:</span>
+            <div class="text-box">{{editForm.remark}}</div>
+          </div>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('editForm')">报名</el-button>
+            <el-button @click="resetForm('editForm')">取消</el-button>
+          </el-form-item>
         </el-card>
 
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('editForm')">报名</el-button>
-          <el-button @click="resetForm('editForm')">取消</el-button>
-        </el-form-item>
+
       </el-form>
 
     </el-dialog>
@@ -419,5 +435,11 @@ a {
 
 .box-card {
   width: 480px;
+
+}
+
+.text-box {
+  border: 1px solid #999;
+  padding: 6px;
 }
 </style>
