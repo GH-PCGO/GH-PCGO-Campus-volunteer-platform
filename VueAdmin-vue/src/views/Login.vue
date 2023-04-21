@@ -91,7 +91,11 @@ export default {
             const jwt = res.headers['authorization']
 
             this.$store.commit('SET_TOKEN', jwt)
-            this.$router.push("/index")
+            this.$router.push("/index");
+
+            const { token, id } = res.data;
+            localStorage.setItem('userToken', token);
+            localStorage.setItem('userId', id);
           })
 
         } else {

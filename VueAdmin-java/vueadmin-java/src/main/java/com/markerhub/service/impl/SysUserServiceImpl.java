@@ -50,6 +50,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         } else {
             // 获取角色编码
+            //可转义为 select * from sys_role where id in{select role_id from sys_user_role where user_id =  userId}
             List<SysRole> roles = sysRoleService.list(new QueryWrapper<SysRole>()
                     .inSql("id", "select role_id from sys_user_role where user_id = " + userId));
 

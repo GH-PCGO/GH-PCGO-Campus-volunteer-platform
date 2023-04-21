@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import Vuex from 'vuex'
 
 import Element from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
@@ -21,3 +22,17 @@ new Vue({
     store,
     render: h => h(App)
 }).$mount('#app')
+
+if (!window.localStorage) {
+    window.localStorage = {
+        getItem: function(key) {
+            return window.sessionStorage.getItem(key);
+        },
+        setItem: function(key, value) {
+            return window.sessionStorage.setItem(key, value);
+        },
+        removeItem: function(key) {
+            return window.sessionStorage.removeItem(key);
+        }
+    };
+}

@@ -7,9 +7,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.dto.PassDto;
 import com.markerhub.common.lang.Const;
 import com.markerhub.common.lang.Result;
-import com.markerhub.entity.SysRole;
-import com.markerhub.entity.SysUser;
-import com.markerhub.entity.SysUserRole;
+import com.markerhub.entity.*;
+import com.markerhub.mapper.SysUserEventMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,7 +28,7 @@ import java.util.List;
  * 前端控制器
  * </p>
  *
- * @author 我的公众号：MarkerHub
+ * @author pc
  * @since 2021-04-05
  */
 @RestController
@@ -47,8 +46,10 @@ public class SysUserController extends BaseController {
         Assert.notNull(sysUser, "找不到该管理员");
 
         List<SysRole> roles = sysRoleService.listRolesByUserId(id);
+        List<SysEvent> events = sysEventService.listEventsByUserId(id);
 
         sysUser.setSysRoles(roles);
+        sysUser.setSysEvents(events);
         return Result.succ(sysUser);
     }
 
@@ -60,7 +61,7 @@ public class SysUserController extends BaseController {
                 .like(StrUtil.isNotBlank(username), "username", username));
 
         pageData.getRecords().forEach(u -> {
-
+            u.setSysEvents(sysEventService.listEventsByUserId(u.getId()));
             u.setSysRoles(sysRoleService.listRolesByUserId(u.getId()));
         });
         //System.out.println("pageData:"+pageData);//pageData:com.baomidou.mybatisplus.extension.plugins.pagination.Page@5f928d15
@@ -108,6 +109,7 @@ public class SysUserController extends BaseController {
         return Result.succ("");
     }
 
+    //user-role n:1
     @Transactional
     @PostMapping("/role/{userId}")
     @PreAuthorize("hasAuthority('sys:user:role')")
@@ -132,6 +134,7 @@ public class SysUserController extends BaseController {
 
         return Result.succ("");
     }
+
 
     @PostMapping("/repass")
     @PreAuthorize("hasAuthority('sys:user:repass')")
@@ -162,4 +165,16 @@ public class SysUserController extends BaseController {
         sysUserService.updateById(sysUser);
         return Result.succ("");
     }
+
+
+    @PostMapping("/event")
+    @PreAuthorize("hasAuthority('sys:event:user')")
+    public Result addUserEvent(@RequestBody SysUserEvent userEvent) {
+        userEventMapper.insert(userEvent);
+        System.out.println(userEvent.toString());
+        return Result.succ("");
+    }
+
+
 }
+

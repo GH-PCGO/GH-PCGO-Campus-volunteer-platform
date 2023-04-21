@@ -6,15 +6,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.lang.Const;
 import com.markerhub.common.lang.Result;
-import com.markerhub.entity.SysEvent;
-import com.markerhub.entity.SysNotice;
-import com.markerhub.entity.SysUser;
+import com.markerhub.entity.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,6 +79,25 @@ public class SysEventController extends BaseController {
 
         return Result.succ("");
     }
+
+//    //event-user n:1
+//    @Transactional
+//    @PostMapping("/user/{eventId}")
+//    @PreAuthorize("hasAuthority('sys:event:user')")
+//    public Result eventuser(@PathVariable("eventId") Long eventId, @RequestBody Long userId) {
+//
+//        List<SysUserEvent> userEvents = new ArrayList<>();
+//
+//
+//            SysUserEvent sysUserEvent = new SysUserEvent();
+//            sysUserEvent.setUserId(userId);
+//            sysUserEvent.setEventId(eventId);
+//
+//            userEvents.add(sysUserEvent);
+//
+//        return Result.succ("");
+//    }
+
 
 }
 

@@ -35,8 +35,12 @@ public class SysUser extends BaseEntity {
     private String city;
 
     private LocalDateTime lastLogin;
-
+    //多表查询-user-role
     @TableField(exist = false)
     private List<SysRole> sysRoles = new ArrayList<>();
+
+    //多表查询-user-role
+    @TableField(exist = false)
+    private List<SysEvent> sysEvents = new ArrayList<>();
 
 }

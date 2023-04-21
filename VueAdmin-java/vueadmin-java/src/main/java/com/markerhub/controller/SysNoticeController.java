@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/sys/notice")
 public class SysNoticeController extends BaseController {
 
-    @PreAuthorize("hasAuthority('sys:notice:list')")
+//    @PreAuthorize("hasAuthority('sys:notice:list')")
     @GetMapping("/list")
     public Result info(String content) {
 

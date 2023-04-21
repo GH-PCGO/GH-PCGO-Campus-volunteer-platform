@@ -87,6 +87,7 @@ public class SysRoleController extends BaseController {
 
     @PostMapping("/delete")
     @PreAuthorize("hasAuthority('sys:role:delete')")
+    //事务
     @Transactional
     public Result info(@RequestBody Long[] ids) {
 

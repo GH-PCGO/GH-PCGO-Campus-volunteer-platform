@@ -111,6 +111,9 @@
                 <div style="padding: 14px;">
                   <!-- <span>item.eventname</span> -->
                   <span>{{ item.eventname }}</span>
+<!--                  <span>-->
+<!--                    用户ID：{{ localStorage.getItem('id') }}-->
+<!--                  </span>-->
                   <div class="bottom clearfix">
                     <time class="time">{{ item.date }}</time>
                   </div>
@@ -121,7 +124,8 @@
       </el-col>
     </div>
 
-
+<!--    :title="editForm.eventname"-->
+<!--    localStorage-->
     <!--新增对话框-->
     <el-dialog
         :title="editForm.eventname"
@@ -150,7 +154,7 @@
             <div class="text-box">{{editForm.remark}}</div>
           </div>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('editForm')">报名</el-button>
+            <el-button type="primary" @click="submitHandle('editForm')">报名</el-button>
             <el-button @click="resetForm('editForm')">取消</el-button>
           </el-form-item>
         </el-card>
@@ -173,14 +177,10 @@ export default {
 
   created() {
     this.getEventList()
-    this.$axios.get("/sys/event/list").then(res => {
-      this.roleTreeData = res.data.data.records
-    })
 
     this.getNoticeList()
-    this.$axios.get("/sys/notice/list").then(res => {
-      this.roleTreeData = res.data.data.records
-    })
+
+    this.getUserInfo()
 
 
   },
@@ -232,6 +232,13 @@ export default {
 
     },
 
+    getUserInfo() {
+      this.$axios.get("/sys/userInfo").then(res => {
+        this.userInfo = res.data.data
+
+      })
+    },
+
     // 详情点击事件
     // editHandle(id) {
     //   this.$axios.get('/sys/event/info/10' ).then(res => {
@@ -260,6 +267,36 @@ export default {
       this.dialogVisible = false
       this.editForm = {}
     },
+ //   报名
+    submitHandle(formName) {
+      this.$axios.post('/sys/user/event', {
+        userId: this.userInfo.id,
+        eventId: this.editForm.id
+      }).then(response => {
+        console.log(response.data);
+        alert("报名成功");
+        this.dialogVisible = false
+      }).catch(error => {
+        console.log(error);
+        alert("报名失败");
+      });
+    },
+
+    // submitRoleHandle(formName) {
+    //   // 获取当前用户ID，并将其添加到POST参数中
+    //   this.$axios.post('/sys/user/event', {
+    //     userId: this.editForm.id,
+    //     eventId: 1
+    //   })
+    //       .then(res => {
+    //         // 处理响应结果
+    //         console.log(res.data)
+    //       })
+    //       .catch(error => {
+    //         // 处理错误情况
+    //         console.error(error)
+    //       })
+    // }
 
 
 
@@ -284,20 +321,20 @@ export default {
         idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test2.jpg')
       }, {id: 2, name: '推荐', idView: require('F:/本科毕业设计/SpringBoot/vueadmin-vue/src/assets/轮播图test3.jpg')},],
       //公告及排行榜测试
-      tableData1: [{
-        notice: '还没写！',
-        date1: '2020-3-6'
-      }, {
-        notice: '还没写！',
-        date1: '2020-3-6'
-      }, {
-        notice: '还没写！',
-        date1: '2020-3-6'
-      }, {
-        notice: '还没写！',
-        date1: '2020-3-6'
-      }],
       tableData2: [{
+        msg: '用户1',
+        date2: '1'
+      }, {
+        msg: '用户2',
+        date2: '2'
+      }, {
+        msg: '用户3',
+        date2: '3'
+      }, {
+        msg: '用户4',
+        date2: '4'
+      }],
+      tableData1: [{
         msg: '还没写！',
         date2: '2020-3-6'
       }, {

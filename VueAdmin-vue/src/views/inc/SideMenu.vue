@@ -32,7 +32,7 @@
 
     </el-submenu>
 
-    <router-link to="/index">
+    <router-link to="/sys/history">
       <el-menu-item index="Index" @click="selectMenu({name: 'Index', title: '首页'})">
         <template slot="title">
           <i class="el-icon-s-flag"></i>

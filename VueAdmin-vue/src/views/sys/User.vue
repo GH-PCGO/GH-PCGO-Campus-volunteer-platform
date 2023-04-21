@@ -364,7 +364,6 @@ export default {
       var roleIds = this.$refs.roleTree.getCheckedKeys()
 
       console.log(roleIds)
-
       this.$axios.post('/sys/user/role/' + this.roleForm.id, roleIds).then(res => {
         this.$message({
           showClose: true,

@@ -2,6 +2,9 @@ package com.markerhub.service;
 
 import com.markerhub.entity.SysEvent;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.markerhub.entity.SysRole;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-04-14
  */
 public interface SysEventService extends IService<SysEvent> {
+
+    List<SysEvent> listEventsByUserId(Long userId);
 
 }

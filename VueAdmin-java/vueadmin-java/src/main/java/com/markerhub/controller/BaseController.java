@@ -1,6 +1,8 @@
 package com.markerhub.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.markerhub.entity.SysUserEvent;
+import com.markerhub.mapper.SysUserEventMapper;
 import com.markerhub.service.*;
 import com.markerhub.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class BaseController {
     SysUserRoleService sysUserRoleService;
 
     @Autowired
+    SysUserEventService sysUserEventService;
+
+    @Autowired
     SysRoleMenuService sysRoleMenuService;
 
     @Autowired
@@ -40,6 +45,9 @@ public class BaseController {
 
     @Autowired
     SysNoticeService sysNoticeService;
+
+    @Autowired
+     SysUserEventMapper userEventMapper;
 
 
     /**
