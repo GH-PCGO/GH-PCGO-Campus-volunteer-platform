@@ -32,6 +32,7 @@
               <th style="width: 100px">联系电话</th>
               <th style="width: 100px">创建人</th>
               <th style="width: 100px">活动备注</th>
+              <th style="width: 100px">操作</th>
 
             </tr>
             </thead>
@@ -50,7 +51,21 @@
 
               <td>{{ sysEvent.leader }}</td>
               <td>{{ sysEvent.remark }}</td>
+              <td>
+                <button @click="cancelHandle(sysEvent.id)">
+                  删除
+                </button>
+<!--                <template slot-scope="scope">-->
+<!--                  <el-button type="text" @click="editHandle(scope.row.id)">编辑</el-button>-->
+<!--                  <el-divider direction="vertical"></el-divider>-->
+<!--                  <template>-->
+<!--                    <el-popconfirm title="这是一段内容确定删除吗？" @confirm="delHandle(scope.row.id)">-->
+<!--                      <el-button type="text" slot="reference">删除</el-button>-->
+<!--                    </el-popconfirm>-->
+<!--                  </template>-->
+<!--                </template>-->
 
+              </td>
 
             </tr>
             </tbody>
@@ -60,103 +75,8 @@
         </template>
       </el-table-column>
 
-
-
-
-<!--            应当还要写：活动人数、剩余名额-->
-
     </el-table>
 
-<!--    <table>-->
-<!--      <thead>-->
-<!--      <tr>-->
-<!--        <th>id</th>-->
-<!--        <th>eventname</th>-->
-<!--      </tr>-->
-<!--      </thead>-->
-<!--      <tbody>-->
-<!--      <tr v-for="(sysEvent, index) in sysEvents" :key="index">-->
-<!--        <td>{{ sysEvent.id }}</td>-->
-<!--        <td>{{ sysEvent.eventname }}</td>-->
-<!--      </tr>-->
-<!--      </tbody>-->
-<!--    </table>-->
-
-
-
-
-    <!--发布活动弹窗-->
-    <el-dialog
-        title="发布活动"
-        :visible.sync="dialogVisible"
-        width="800px"
-        :before-close="handleClose">
-
-      <el-form :model="editForm" :rules="editFormRules" ref="editForm">
-        <el-form-item label="活动名称" prop="eventname" label-width="120px">
-          <el-input v-model="editForm.eventname" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="活动图片上传" prop="img" label-width="120px">
-          <el-upload
-              class="upload-demo"
-              action="http://localhost:8081/sys/express/upload"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :before-remove="beforeRemove"
-              :on-success="handleAvatarSuccess"
-              :limit="1"
-              :on-exceed="handleExceed"
-              :file-list="fileList">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
-        </el-form-item>
-
-        <el-form-item label="活动人数" prop="num" label-width="120px">
-          <el-input v-model="editForm.num" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="活动地点" prop="location" label-width="120px">
-          <el-input v-model="editForm.location" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="活动时间" label-width="120px">
-          <el-col :span="5">
-            <el-date-picker type="date" placeholder="选择日期" v-model="editForm.date" format="yyyy 年 MM 月 dd 日"
-                            value-format="yyyy-MM-dd" style="width: 250px;"></el-date-picker>
-
-          </el-col>
-          <el-col class="line" :span="4">-</el-col>
-          <el-col :span="5">
-            <el-time-picker placeholder="选择时间" v-model="editForm.time" format="yy 时 MM 分 dd 秒" value-format="yy:MM:dd"
-                            style="width: 250px;"></el-time-picker>
-          </el-col>
-        </el-form-item>
-
-        <el-form-item label="活动时长" prop="duration" label-width="120px">
-          <el-input v-model="editForm.duration" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="联系方式" prop="phone" label-width="120px">
-          <el-input v-model="editForm.phone" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="创建人" prop="leader" label-width="120px">
-          <el-input v-model="editForm.leader" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="活动内容" prop="remark" label-width="120px">
-          <el-input v-model="editForm.remark" autocomplete="off"></el-input>
-        </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="resetForm('editForm')">取 消</el-button>
-        <el-button type="primary" @click="submitForm('editForm')">确定</el-button>
-      </div>
-
-    </el-dialog>
 
 
   </div>
@@ -181,6 +101,7 @@ export default {
   data() {
     return {
       searchForm: {},
+      fileList: {},
       delBtlStatu: true,
       dialogImageUrl: '',
       //弹窗是否显示
@@ -189,6 +110,7 @@ export default {
 
       //弹窗相关组件赋值
       editForm: {},
+
       tableData: [],
       //弹窗表单校验
       editFormRules: {
@@ -254,12 +176,32 @@ export default {
       });
     },
     editHandle(id) {
-      this.$axios.get('/sys/evnet/info/' + id).then(res => {
+      this.$axios.get('/sys/event/info/' + id).then(res => {
         this.editForm = res.data.data
 
         this.dialogVisible = true
       })
     },
+
+    cancelHandle(id) {
+      //取消报名操作，需要删除一条记录
+      // alert("删除活动："+id)
+      // console.log(id)
+      // this.$axios.get('/sys/event/info/' + id)
+      this.$axios.post("/sys/user/cancel/"+ id).then(res => {
+        this.$message({
+          showClose: true,
+          message: '您已成功取消报名'+id,
+          type: 'success',
+          onClose: () => {
+            this.getUserList()
+            this.getUserInfo()
+          }
+        });
+      })
+
+    },
+
     delHandle(id) {
 
       var ids = []
@@ -305,26 +247,24 @@ export default {
     },
 
 
-//获取活动列表
-    getEventList() {
-      //搜索时要用到的参数
-      this.$axios.get("/sys/event/list", {
-        params: {
-          eventname: this.searchForm.eventname,
-          //分页的current和size
-          current: this.current,
-          size: this.size
-        }
-      }).then(res => {
-        this.tableData = res.data.data.records
-        this.size = res.data.data.size
-        this.current = res.data.data.current
-        this.total = res.data.data.total
-        //alert(this.current)
-      })
-
-
-    },
+// //获取活动列表
+//     getEventList() {
+//       //搜索时要用到的参数
+//       this.$axios.get("/sys/event/list", {
+//         params: {
+//           eventname: this.searchForm.eventname,
+//           //分页的current和size
+//           current: this.current,
+//           size: this.size
+//         }
+//       }).then(res => {
+//         this.tableData = res.data.data.records
+//         this.size = res.data.data.size
+//         this.current = res.data.data.current
+//         this.total = res.data.data.total
+//         //alert(this.current)
+//       })
+//     },
 
     getUserInfo() {
       this.$axios.get("/sys/userInfo").then(res => {
@@ -334,25 +274,16 @@ export default {
     },
 
     getUserList() {
-      this.$axios.get("/sys/user/list", {
-        params: {
-          username: this.searchForm.username,
-          current: this.current,
-          size: this.size
-        }
-      }).then(res => {
-        //这里需要强转！！！
+      this.$axios.get("/sys/user/list").then(res => {
+        //这里需要强转或者push进数组！！！
         this.tableData = (Array)(res.data.data.records[this.userInfo.id-1])
-        //this.tableData = (Array)(res.data.data.records)
-        //alert(this.userInfo.id)
+        //this.tableData.push(res.data.data.records[this.userInfo.id-1])
+        //this.tableData = res.data.data.records        //alert(this.userInfo.id)
         //alert(this.userInfo.id);//[object Object]
         //alert(res.data.data.records);//[object Object],[object Object],[object Object],[object Object]
         this.size = res.data.data.size
         this.current = res.data.data.current
         this.total = res.data.data.total
-
-
-        //alert(this.tableData) //[object Object],[object Object],[object Object],[object Object],[object Object]
       })
       /**
        *             // // 遍历数组获取里面的商品内容添加

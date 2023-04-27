@@ -53,11 +53,15 @@ public class SysEventController extends BaseController {
         return Result.succ(sysEvent);
     }
 
+
+    //       GET http://localhost:8081/sys/evnet/info/18 404 //url拼写错误
+    //       URL http://localhost:8081/sys/notice/info/13
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('sys:event:list')")
     public Result info(@PathVariable(name = "id") Long id) {
         return Result.succ(sysEventService.getById(id));
     }
+
 
 
     @PostMapping("/update")
@@ -79,6 +83,16 @@ public class SysEventController extends BaseController {
 
         return Result.succ("");
     }
+
+//    @Transactional
+//    @PostMapping("/cancel")
+//    //@PreAuthorize("hasAuthority('sys:event:delete')")
+//    public Result cancel(@RequestBody Long id) {
+//
+//        sysUserEventService.removeById(id);
+//
+//        return Result.succ("");
+//    }
 
 //    //event-user n:1
 //    @Transactional

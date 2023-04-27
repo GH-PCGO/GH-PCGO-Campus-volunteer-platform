@@ -8,6 +8,7 @@ import com.markerhub.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -46,7 +47,7 @@ public class BaseController {
     @Autowired
     SysNoticeService sysNoticeService;
 
-    @Autowired
+    @Resource
      SysUserEventMapper userEventMapper;
 
 

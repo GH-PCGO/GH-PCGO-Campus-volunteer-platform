@@ -168,10 +168,22 @@ public class SysUserController extends BaseController {
 
 
     @PostMapping("/event")
-    @PreAuthorize("hasAuthority('sys:event:user')")
+    //@PreAuthorize("hasAuthority('sys:event:user')")
     public Result addUserEvent(@RequestBody SysUserEvent userEvent) {
         userEventMapper.insert(userEvent);
-        System.out.println(userEvent.toString());
+        //System.out.println(userEvent.toString());
+        return Result.succ("");
+    }
+
+    @Transactional
+    //http://localhost:8081/sys/user/cancel/18
+    @PostMapping("/cancel/{id}")
+    @PreAuthorize("hasAuthority('sys:event:user')")
+    public Result cancel(@PathVariable("id") Long id) {
+
+        userEventMapper.delete(new QueryWrapper<SysUserEvent>().eq("event_id", id));
+        //ystem.out.println("要删除的id"+id);
+        //sysUserEventMapper.delete(new QueryWrapper<SysUserEvent>().eq("name", name));
         return Result.succ("");
     }
 
